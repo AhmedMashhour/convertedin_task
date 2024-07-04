@@ -21,6 +21,8 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->index(['role','name']);
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

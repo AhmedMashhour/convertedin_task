@@ -41,9 +41,9 @@ class TaskController extends Controller
     public function create(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
     {
         $users = $this->userRepository->getByKey('role', User::ROLE_TYPE_USER)
-            ->pluck('name', 'id');
+            ->limit(10)->pluck('name', 'id');
         $admins = $this->userRepository->getByKey('role', User::ROLE_TYPE_ADMIN)
-            ->pluck('name', 'id');
+            ->limit(10)->pluck('name', 'id');
 
         return view('task.create', [
             'users' => $users,

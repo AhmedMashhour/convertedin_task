@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class UpdateStatistics implements ShouldQueue
 {
@@ -32,18 +33,15 @@ class UpdateStatistics implements ShouldQueue
      */
     public function handle()
     {
-
-
         $statistics = $this->statisticsRepository->getByKey('user_id', $this->user_id)->first();
-        $total_tasks = $this->taskRepository->getByKey('assigned_to_id', $this->user_id)->get()->count();
-
+        $total_tasks = $this->taskRepository->getByKey('assigned_to_id', $this->user_id)->count();
 
         if (isset($statistics->id)) {
-            $statistics=  $this->statisticsRepository->update($statistics, [
+             $this->statisticsRepository->update($statistics, [
                 'total_tasks' => $total_tasks,
             ]);
         } else {
-            $statistics=  $this->statisticsRepository->create([
+            $this->statisticsRepository->create([
                 'user_id' => $this->user_id,
                 'total_tasks' => $total_tasks,
             ]);

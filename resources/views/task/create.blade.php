@@ -40,7 +40,7 @@
 
                             <div>
                                 <x-input-label for="assigned_to" :value="__('task.assigned_to')" />
-                                <select id="assigned_to"  name="assigned_to_id"  class="mt-1 block w-full" autocomplete="assigned to" >
+                                <select id="assigned_to"  name="assigned_to_id"  class="mt-1 block w-full select2" autocomplete="assigned to" >
                                     <option value="">Select a user</option>
                                     @foreach($users as $id => $name)
                                         <option value="{{$id }}">{{ $name }}</option>
@@ -51,7 +51,7 @@
 
                             <div>
                                 <x-input-label for="assigned_by" :value="__('task.assigned_by')" />
-                                <select id="assigned_by"  name="assigned_by_id"  class="mt-1 block w-full" autocomplete="assigned by" >
+                                <select id="assigned_by"  name="assigned_by_id"  class="mt-1 block w-full select2" autocomplete="assigned by" >
                                     <option value="">Select a admin</option>
                                     @foreach($admins as $id => $name)
                                         <option value="{{$id }}">{{ $name }}</option>
@@ -82,4 +82,81 @@
 
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            function initializeAdminSelect2(selector) {
+                $('#assigned_by').select2({
+                    placeholder: 'Select an option',
+                    ajax: {
+                        url: '/search',  // Your search route
+                        dataType: 'json',
+                        data: function (params) {
+                            console.log(params)
+                            return {
+                                name: params.term,
+                                role: 'admin'
+                            };
+                        },
+                        delay: 250,
+                        processResults: function (data) {
+                            return {
+                                results: $.map(data, function (item) {
+                                    return {
+                                        id: item.id,
+                                        text: item.name  // Adjust based on your data structure
+                                    };
+                                })
+                            };
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        }
+                    }
+                });
+                $(selector).on('select2:open', function() {
+                    let select2SearchField = $('.select2-container--open .select2-search__field');
+                    select2SearchField.focus();
+                });
+            }
+
+            function initializeUserSelect2(selector) {
+                $('#assigned_to').select2({
+                    placeholder: 'Select an option',
+                    ajax: {
+                        url: '/search',  // Your search route
+                        dataType: 'json',
+                        data: function (params) {
+                            console.log(params)
+                            return {
+                                name: params.term,
+                                role: 'user'
+                            };
+                        },
+                        delay: 250,
+                        processResults: function (data) {
+                            return {
+                                results: $.map(data, function (item) {
+                                    return {
+                                        id: item.id,
+                                        text: item.name  // Adjust based on your data structure
+                                    };
+                                })
+                            };
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        }
+                    }
+                });
+                $(selector).on('select2:open', function() {
+                    let select2SearchField = $('.select2-container--open .select2-search__field');
+                    select2SearchField.focus();
+                });
+            }
+            // // Initialize Select2 for both select inputs
+            initializeUserSelect2('#assigned_to');
+            initializeAdminSelect2('#assigned_by');
+        });
+    </script>
 </x-app-layout>

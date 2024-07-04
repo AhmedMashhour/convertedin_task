@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('total_tasks');
             $table->timestamps();
             $table->softDeletes();
+            $table->index(['total_tasks']);
         });
     }
 

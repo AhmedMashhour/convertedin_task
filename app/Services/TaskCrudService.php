@@ -40,10 +40,6 @@ class TaskCrudService extends CrudService
             return;
         }
         $output->task = $this->repository->create($request);
-
-        parent::create($request, $output);
-
-
         UpdateStatistics::dispatch($output->task->assigned_to_id);
     }
 }

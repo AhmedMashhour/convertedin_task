@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GetUserByNameController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\TaskController;
@@ -20,6 +21,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/tasks/create', [TaskController::class,'create'])->name('tasks.create');
         Route::post('/tasks/store', [TaskController::class,'store'])->name('tasks.store');;
         Route::get('/statistics', StatisticsController::class)->name('statistics');
+        Route::get('/search', GetUserByNameController::class)->name('search');
 
     });
 });
