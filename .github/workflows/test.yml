@@ -14,12 +14,13 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
+          extensions: sqlite, pdo_sqlite, pcntl, zip, intl, exif, mbstring, dom, fileinfo, mysql
 
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
@@ -45,6 +46,9 @@ jobs:
 
       - name: Install npm dependencies
         run: npm install
+
+      - name: Compile assets
+        run: npm run dev
 
       - name: Run tests
         run: php artisan test
