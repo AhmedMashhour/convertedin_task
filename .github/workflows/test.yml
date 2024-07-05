@@ -57,7 +57,7 @@ jobs:
         run: npm install
 
       - name: Compile assets
-        run: npm run production
+        run: npm run build
 
       - name: Run tests
         run: php artisan test
