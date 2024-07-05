@@ -18,6 +18,7 @@ class TaskController extends Controller
 
     public function __construct()
     {
+        // initialize
         $this->taskCurdService = new TaskCrudService('Task');
         $this->userRepository = Repository::getRepository('User');
         $this->taskRepository = Repository::getRepository('Task');
